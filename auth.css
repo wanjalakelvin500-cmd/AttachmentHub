@@ -1,0 +1,244 @@
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #102b48, #126b62);
+    padding: 35px 15px;
+    color: #18233d;
+}
+
+.auth-container {
+    max-width: 760px;
+    margin: auto;
+}
+
+.login-container {
+    max-width: 480px;
+    padding-top: 45px;
+}
+
+.brand {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 25px;
+    color: white;
+    font-size: 25px;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.brand > span:last-child {
+    color: #64e0b8;
+}
+
+.brand-icon {
+    background: #22ad87;
+    color: white;
+    padding: 9px 13px;
+    border-radius: 10px;
+}
+
+.auth-card {
+    background: white;
+    padding: 35px;
+    border-radius: 18px;
+    box-shadow: 0 20px 60px #00000030;
+    animation: appear 0.6s ease;
+}
+
+.heading {
+    margin-bottom: 28px;
+}
+
+.eyebrow {
+    font-size: 11px;
+    letter-spacing: 2px;
+    font-weight: bold;
+    color: #168b70;
+}
+
+.heading h1 {
+    font-size: 27px;
+    margin: 12px 0;
+}
+
+.heading p {
+    color: #78859a;
+    line-height: 1.6;
+    font-size: 14px;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+}
+
+.field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 18px;
+    min-width: 0;
+}
+
+.field.full {
+    grid-column: 1 / -1;
+}
+
+.field label {
+    font-size: 13px;
+    font-weight: bold;
+    color: #34425b;
+}
+
+.field input, .field select {
+    width: 100%;
+    min-width: 0;
+    padding: 14px;
+    border: 1px solid #dce3ec;
+    border-radius: 8px;
+    outline: none;
+    background: #fbfcfe;
+    color: #18233d;
+    font-size: 14px;
+}
+
+.field input:focus, .field select:focus {
+    border-color: #168b70;
+    box-shadow: 0 0 0 3px #168b7018;
+}
+
+.password-box {
+    display: flex;
+    border: 1px solid #dce3ec;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #fbfcfe;
+}
+
+.password-box:focus-within {
+    border-color: #168b70;
+}
+
+.password-box input {
+    border: none;
+    background: transparent;
+    box-shadow: none !important;
+}
+
+.toggle-password {
+    border: none;
+    background: transparent;
+    color: #168b70;
+    font-weight: bold;
+    padding: 0 12px;
+    cursor: pointer;
+}
+
+.terms, .login-options {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    margin: 10px 0 22px;
+    color: #65738a;
+    font-size: 12px;
+}
+
+.terms input, .login-options input {
+    accent-color: #168b70;
+}
+
+.submit-btn {
+    width: 100%;
+    padding: 15px;
+    background: #168b70;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-weight: bold;
+    font-size: 15px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.submit-btn:hover {
+    background: #106b56;
+    transform: translateY(-2px);
+}
+
+.message {
+    margin-top: 15px;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.message.success {
+    color: #168b70;
+}
+
+.message.error {
+    color: #d83c4c;
+}
+
+.auth-bottom {
+    text-align: center;
+    border-top: 1px solid #e8edf3;
+    margin-top: 25px;
+    padding-top: 22px;
+    font-size: 13px;
+    color: #718096;
+}
+
+.auth-bottom a, .login-options a {
+    color: #168b70;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.login-options {
+    justify-content: space-between;
+}
+
+.back-home {
+    text-align: center;
+    margin-top: 22px;
+}
+
+.back-home a {
+    color: white;
+    font-size: 13px;
+    text-decoration: none;
+}
+
+@keyframes appear {
+    from { opacity: 0; transform: translateY(18px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@media(max-width: 550px) {
+    .auth-card {
+        padding: 23px 18px;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+
+    .field.full {
+        grid-column: auto;
+    }
+
+    .heading h1 {
+        font-size: 23px;
+    }
+}

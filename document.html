@@ -1,0 +1,807 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KaziLink KE | Document Portal</title>
+
+<style>
+* {
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,sans-serif;
+}
+
+body {
+    background:#f2f5fc;
+    color:#1e293b;
+}
+
+header {
+    background:linear-gradient(110deg,#10234b,#334fc0,#743cc4);
+    padding:22px 7%;
+    color:white;
+}
+
+.header-content {
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:15px;
+}
+
+.logo {
+    font-size:25px;
+    font-weight:bold;
+    color:#67e8f9;
+}
+
+.logo span {
+    color:white;
+}
+
+header p {
+    font-size:13px;
+    color:#dbeafe;
+    margin-top:6px;
+}
+
+.profile {
+    background:#ffffff22;
+    padding:11px 16px;
+    border-radius:10px;
+    font-size:13px;
+}
+
+.container {
+    width:92%;
+    max-width:1150px;
+    margin:30px auto;
+}
+
+.heading {
+    margin-bottom:25px;
+}
+
+.heading h1 {
+    font-size:26px;
+    margin-bottom:9px;
+}
+
+.heading p {
+    color:#718096;
+    font-size:14px;
+    line-height:1.6;
+}
+
+.grid {
+    display:grid;
+    grid-template-columns:1.5fr 1fr;
+    gap:22px;
+    align-items:start;
+}
+
+.card {
+    background:white;
+    padding:24px;
+    border-radius:17px;
+    box-shadow:0 7px 25px #1725540d;
+    margin-bottom:20px;
+}
+
+.card h2 {
+    font-size:18px;
+    margin-bottom:8px;
+}
+
+.subtitle {
+    color:#8491a8;
+    font-size:13px;
+    margin-bottom:22px;
+    line-height:1.5;
+}
+
+/* UPLOAD BOX */
+
+.upload-area {
+    border:2px dashed #94a3d0;
+    border-radius:15px;
+    padding:35px 15px;
+    text-align:center;
+    background:#f8faff;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.upload-area:hover,
+.upload-area.dragover {
+    border-color:#2563eb;
+    background:#eff6ff;
+    transform:translateY(-2px);
+}
+
+.upload-icon {
+    font-size:42px;
+    margin-bottom:12px;
+}
+
+.upload-area h3 {
+    font-size:16px;
+    margin-bottom:9px;
+}
+
+.upload-area p {
+    color:#8491a8;
+    font-size:12px;
+    line-height:1.7;
+}
+
+.upload-area strong {
+    color:#2563eb;
+}
+
+input[type=file] {
+    display:none;
+}
+
+/* FORM */
+
+.form-group {
+    margin-top:19px;
+}
+
+label {
+    display:block;
+    font-size:13px;
+    font-weight:bold;
+    margin-bottom:8px;
+}
+
+select,input[type=text],textarea {
+    width:100%;
+    padding:13px;
+    border:1px solid #dce3ef;
+    border-radius:9px;
+    outline:none;
+    background:#fff;
+    font-size:14px;
+}
+
+select:focus,input:focus,textarea:focus {
+    border-color:#2563eb;
+    box-shadow:0 0 0 3px #2563eb15;
+}
+
+textarea {
+    min-height:85px;
+    resize:vertical;
+}
+
+.btn {
+    border:none;
+    padding:13px 18px;
+    border-radius:9px;
+    cursor:pointer;
+    font-weight:bold;
+    transition:.3s;
+}
+
+.primary {
+    background:linear-gradient(90deg,#2563eb,#7545ce);
+    color:white;
+    width:100%;
+    margin-top:20px;
+}
+
+.primary:hover {
+    transform:translateY(-3px);
+    box-shadow:0 8px 20px #2563eb30;
+}
+
+.secondary {
+    background:#e8efff;
+    color:#2850aa;
+}
+
+/* DOCUMENT LIST */
+
+.document {
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:14px 0;
+    border-bottom:1px solid #edf0f5;
+}
+
+.file-icon {
+    width:43px;
+    height:43px;
+    display:grid;
+    place-items:center;
+    border-radius:10px;
+    background:#e9efff;
+    font-size:21px;
+    flex-shrink:0;
+}
+
+.file-info {
+    flex:1;
+    min-width:0;
+}
+
+.file-info h4 {
+    font-size:13px;
+    margin-bottom:6px;
+    overflow-wrap:anywhere;
+}
+
+.file-info p {
+    color:#8491a8;
+    font-size:11px;
+}
+
+.file-actions {
+    display:flex;
+    align-items:center;
+    gap:7px;
+}
+
+.file-actions button {
+    border:none;
+    background:#edf2ff;
+    color:#2850aa;
+    padding:8px;
+    border-radius:7px;
+    cursor:pointer;
+}
+
+.file-actions .delete {
+    color:#dc2626;
+    background:#fee2e2;
+}
+
+.badge {
+    display:inline-block;
+    padding:5px 8px;
+    border-radius:20px;
+    font-size:10px;
+    font-weight:bold;
+}
+
+.uploaded {
+    color:#15803d;
+    background:#dcfce7;
+}
+
+.pending {
+    color:#b45309;
+    background:#fef3c7;
+}
+
+/* PROGRESS */
+
+.progress-bg {
+    height:10px;
+    background:#e8edf5;
+    border-radius:20px;
+    overflow:hidden;
+    margin:15px 0 8px;
+}
+
+.progress-fill {
+    height:100%;
+    width:0;
+    background:linear-gradient(90deg,#2563eb,#7c3aed);
+    transition:width .5s;
+}
+
+.progress-text {
+    font-size:12px;
+    color:#718096;
+    display:flex;
+    justify-content:space-between;
+}
+
+/* REQUIREMENTS */
+
+.requirement {
+    display:flex;
+    align-items:flex-start;
+    gap:10px;
+    margin:15px 0;
+    font-size:13px;
+    line-height:1.5;
+}
+
+.requirement input {
+    accent-color:#2563eb;
+    margin-top:3px;
+}
+
+.notice {
+    padding:14px;
+    background:#eff6ff;
+    border-left:4px solid #2563eb;
+    border-radius:8px;
+    font-size:12px;
+    line-height:1.6;
+    color:#334155;
+}
+
+.empty {
+    text-align:center;
+    color:#8491a8;
+    padding:25px 10px;
+    font-size:13px;
+}
+
+footer {
+    text-align:center;
+    padding:25px;
+    color:#8491a8;
+    font-size:12px;
+}
+
+@media(max-width:800px) {
+    .grid {
+        grid-template-columns:1fr;
+    }
+
+    .header-content {
+        align-items:flex-start;
+        flex-direction:column;
+    }
+}
+
+@media(max-width:450px) {
+    .container {
+        width:94%;
+    }
+
+    .card {
+        padding:17px;
+    }
+
+    .heading h1 {
+        font-size:22px;
+    }
+
+    .file-actions {
+        flex-direction:column;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="header-content">
+        <div>
+            <div class="logo">KaziLink <span>KE</span></div>
+            <p>Student Document Management Portal</p>
+        </div>
+
+        <div class="profile">
+            👤 Student Account
+        </div>
+    </div>
+</header>
+
+<div class="container">
+
+    <div class="heading">
+        <h1>My Documents 📁</h1>
+        <p>
+            Upload, manage and organize your documents for
+            industrial attachment, internships and job applications.
+        </p>
+    </div>
+
+    <div class="grid">
+
+        <!-- LEFT COLUMN -->
+        <div>
+
+            <div class="card">
+                <h2>Upload New Document</h2>
+                <p class="subtitle">
+                    Select a document category and upload your file.
+                    PDF is recommended for official documents.
+                </p>
+
+                <div class="upload-area" id="dropArea">
+                    <div class="upload-icon">☁️</div>
+                    <h3>Drag and drop your file here</h3>
+                    <p>
+                        Or <strong>click to browse files</strong><br>
+                        PDF, DOC, DOCX, JPG, PNG • Maximum 5 MB per file
+                    </p>
+                </div>
+
+                <input type="file" id="fileInput"
+                       accept=".pdf,.doc,.docx,.jpg,.jpeg,.png">
+
+                <div class="form-group">
+                    <label>Document Category</label>
+
+                    <select id="category">
+                        <option value="">Select document type</option>
+                        <option>Curriculum Vitae (CV)</option>
+                        <option>School Attachment Letter</option>
+                        <option>Academic Transcript</option>
+                        <option>National ID Copy</option>
+                        <option>Academic Certificate</option>
+                        <option>Recommendation Letter</option>
+                        <option>Good Conduct Certificate</option>
+                        <option>Professional Certificate</option>
+                        <option>Other Supporting Document</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Document Description</label>
+                    <textarea id="description"
+                        placeholder="Enter additional information about this document..."></textarea>
+                </div>
+
+                <button class="btn primary" onclick="uploadDocument()">
+                    ⬆ Upload Document
+                </button>
+
+                <div id="uploadMessage"></div>
+            </div>
+
+
+            <div class="card">
+                <h2>My Uploaded Documents</h2>
+                <p class="subtitle">
+                    View and manage the documents you have selected.
+                </p>
+
+                <div id="documentList">
+                    <div class="empty">
+                        No documents uploaded yet.
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+        <!-- RIGHT COLUMN -->
+        <div>
+
+            <div class="card">
+                <h2>Document Completion</h2>
+                <p class="subtitle">
+                    Track your document preparation progress.
+                </p>
+
+                <h3 id="completionNumber">0%</h3>
+
+                <div class="progress-bg">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+
+                <div class="progress-text">
+                    <span>Required documents uploaded</span>
+                    <span id="progressCount">0/4</span>
+                </div>
+            </div>
+
+
+            <div class="card">
+                <h2>Attachment Requirements</h2>
+                <p class="subtitle">
+                    Example checklist for preparing your application.
+                    Requirements vary by institution and employer.
+                </p>
+
+                <div id="checklist">
+
+                    <label class="requirement">
+                        <input type="checkbox" data-required="cv">
+                        Curriculum Vitae (CV)
+                    </label>
+
+                    <label class="requirement">
+                        <input type="checkbox" data-required="letter">
+                        Official School Attachment Letter
+                    </label>
+
+                    <label class="requirement">
+                        <input type="checkbox" data-required="transcript">
+                        Academic Transcript
+                    </label>
+
+                    <label class="requirement">
+                        <input type="checkbox" data-required="id">
+                        National ID Copy
+                    </label>
+
+                </div>
+
+                <div class="notice">
+                    ⚠️ Uploading a document does not automatically mean
+                    it has been verified or approved. The institution or
+                    employer may request additional documents.
+                </div>
+            </div>
+
+
+            <div class="card">
+                <h2>Important Information</h2>
+
+                <div class="requirement">
+                    📄 Use clear and readable scanned documents.
+                </div>
+
+                <div class="requirement">
+                    🔐 Do not upload another person's private documents.
+                </div>
+
+                <div class="requirement">
+                    📌 Ensure your school attachment letter is signed
+                    and officially stamped where required.
+                </div>
+
+                <div class="requirement">
+                    📁 Keep your CV and academic documents updated.
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<footer>
+    © 2026 KaziLink KE | Student Document Portal
+</footer>
+
+
+<script>
+
+let documents = [];
+let selectedFile = null;
+
+const dropArea = document.getElementById("dropArea");
+const fileInput = document.getElementById("fileInput");
+
+dropArea.addEventListener("click", () => fileInput.click());
+
+fileInput.addEventListener("change", function() {
+    if(this.files.length) {
+        selectFile(this.files[0]);
+    }
+});
+
+dropArea.addEventListener("dragover", function(e) {
+    e.preventDefault();
+    dropArea.classList.add("dragover");
+});
+
+dropArea.addEventListener("dragleave", function() {
+    dropArea.classList.remove("dragover");
+});
+
+dropArea.addEventListener("drop", function(e) {
+    e.preventDefault();
+    dropArea.classList.remove("dragover");
+
+    if(e.dataTransfer.files.length) {
+        selectFile(e.dataTransfer.files[0]);
+    }
+});
+
+function selectFile(file) {
+
+    const allowed = [
+        "application/pdf",
+        "application/msword",
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+        "image/jpeg",
+        "image/png"
+    ];
+
+    if(!allowed.includes(file.type)) {
+        alert("File type not allowed. Select PDF, DOC, DOCX, JPG or PNG.");
+        return;
+    }
+
+    if(file.size > 5 * 1024 * 1024) {
+        alert("File is too large. Maximum size is 5 MB.");
+        return;
+    }
+
+    selectedFile = file;
+
+    dropArea.querySelector("h3").textContent = file.name;
+    dropArea.querySelector("p").textContent =
+        "Selected successfully • " + formatSize(file.size);
+}
+
+function uploadDocument() {
+
+    const category = document.getElementById("category").value;
+    const description = document.getElementById("description").value;
+
+    if(!selectedFile) {
+        alert("Please select a document first.");
+        return;
+    }
+
+    if(!category) {
+        alert("Please select a document category.");
+        return;
+    }
+
+    const documentData = {
+        id: Date.now(),
+        name: selectedFile.name,
+        category: category,
+        description: description,
+        size: selectedFile.size,
+        file: selectedFile,
+        date: new Date().toLocaleDateString()
+    };
+
+    documents.push(documentData);
+
+    renderDocuments();
+    updateProgress();
+
+    document.getElementById("uploadMessage").innerHTML =
+        '<p style="color:green;margin-top:15px;font-size:13px;">✓ Document added to this demo session.</p>';
+
+    selectedFile = null;
+    fileInput.value = "";
+
+    dropArea.querySelector("h3").textContent =
+        "Drag and drop your file here";
+
+    dropArea.querySelector("p").innerHTML =
+        'Or <strong>click to browse files</strong><br>PDF, DOC, DOCX, JPG, PNG • Maximum 5 MB per file';
+
+    document.getElementById("category").value = "";
+    document.getElementById("description").value = "";
+}
+
+function renderDocuments() {
+
+    const list = document.getElementById("documentList");
+
+    if(documents.length === 0) {
+        list.innerHTML = '<div class="empty">No documents uploaded yet.</div>';
+        return;
+    }
+
+    list.innerHTML = "";
+
+    documents.forEach(doc => {
+
+        const item = document.createElement("div");
+        item.className = "document";
+
+        const info = document.createElement("div");
+        info.className = "file-info";
+
+        const title = document.createElement("h4");
+        title.textContent = doc.category;
+
+        const details = document.createElement("p");
+        details.textContent =
+            doc.name + " • " + formatSize(doc.size) +
+            " • " + doc.date;
+
+        const status = document.createElement("span");
+        status.className = "badge uploaded";
+        status.textContent = "Added to demo";
+
+        info.append(title, details, status);
+
+        const icon = document.createElement("div");
+        icon.className = "file-icon";
+        icon.textContent = "📄";
+
+        const actions = document.createElement("div");
+        actions.className = "file-actions";
+
+        const preview = document.createElement("button");
+        preview.textContent = "View";
+        preview.onclick = () => previewDocument(doc.id);
+
+        const remove = document.createElement("button");
+        remove.textContent = "✕";
+        remove.className = "delete";
+        remove.onclick = () => deleteDocument(doc.id);
+
+        actions.append(preview, remove);
+
+        item.append(icon, info, actions);
+        list.appendChild(item);
+    });
+}
+
+function previewDocument(id) {
+
+    const doc = documents.find(d => d.id === id);
+
+    if(!doc) return;
+
+    const url = URL.createObjectURL(doc.file);
+    const opened = window.open(url, "_blank");
+
+    if(!opened) {
+        alert("Allow pop-ups to preview this document.");
+    }
+
+    setTimeout(() => URL.revokeObjectURL(url), 60000);
+}
+
+function deleteDocument(id) {
+
+    if(confirm("Remove this document from the demo list?")) {
+        documents = documents.filter(doc => doc.id !== id);
+
+        renderDocuments();
+        updateProgress();
+    }
+}
+
+function updateProgress() {
+
+    const required = {
+        cv: "Curriculum Vitae (CV)",
+        letter: "School Attachment Letter",
+        transcript: "Academic Transcript",
+        id: "National ID Copy"
+    };
+
+    let completed = 0;
+
+    Object.keys(required).forEach(key => {
+
+        const uploaded = documents.some(doc =>
+            doc.category === required[key]
+        );
+
+        const checkbox = document.querySelector(
+            '[data-required="' + key + '"]'
+        );
+
+        checkbox.checked = uploaded;
+
+        if(uploaded) completed++;
+    });
+
+    const percent = Math.round((completed / 4) * 100);
+
+    document.getElementById("completionNumber").textContent =
+        percent + "%";
+
+    document.getElementById("progressFill").style.width =
+        percent + "%";
+
+    document.getElementById("progressCount").textContent =
+        completed + "/4";
+}
+
+function formatSize(bytes) {
+
+    if(bytes < 1024) return bytes + " B";
+
+    if(bytes < 1024 * 1024) {
+        return (bytes / 1024).toFixed(1) + " KB";
+    }
+
+    return (bytes / (1024 * 1024)).toFixed(2) + " MB";
+}
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,991 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KaziLink KE | Administration</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background: #f1f5f9;
+    color: #1e293b;
+}
+
+/* LOGIN PAGE */
+.login-page {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    background: linear-gradient(135deg,#07152f,#123b68,#087f70);
+}
+
+.login-box {
+    width: 100%;
+    max-width: 420px;
+    padding: 35px;
+    background: white;
+    border-radius: 18px;
+    box-shadow: 0 20px 50px rgba(0,0,0,.25);
+    animation: slide .5s ease;
+}
+
+@keyframes slide {
+    from {opacity:0;transform:translateY(25px)}
+    to {opacity:1;transform:translateY(0)}
+}
+
+.brand {
+    text-align: center;
+    font-size: 28px;
+    font-weight: bold;
+    color: #059669;
+    margin-bottom: 10px;
+}
+
+.brand span {color:#142b4c}
+
+.login-box h2 {
+    text-align: center;
+    margin: 20px 0 8px;
+}
+
+.login-box p {
+    text-align: center;
+    color: #64748b;
+    font-size: 14px;
+    margin-bottom: 25px;
+}
+
+.login-box label {
+    display: block;
+    margin: 12px 0 7px;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.login-box input {
+    width: 100%;
+    padding: 14px;
+    border: 1px solid #cbd5e1;
+    border-radius: 9px;
+    outline: none;
+}
+
+.login-box input:focus {
+    border-color: #059669;
+    box-shadow: 0 0 0 3px #d1fae5;
+}
+
+.login-btn {
+    width: 100%;
+    padding: 14px;
+    margin-top: 22px;
+    background: #059669;
+    color: white;
+    border: none;
+    border-radius: 9px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.login-btn:hover {background:#047857}
+
+.login-message {
+    margin-top: 15px;
+    color: #b45309;
+    font-size: 13px;
+    text-align: center;
+    line-height: 1.5;
+}
+
+/* ADMIN LAYOUT */
+.dashboard {display:none}
+
+.sidebar {
+    width: 255px;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: #101c34;
+    color: white;
+    padding: 22px 14px;
+    overflow-y: auto;
+    z-index: 100;
+    transition: .3s;
+}
+
+.sidebar-logo {
+    font-size: 23px;
+    font-weight: bold;
+    color: #4ade80;
+    margin: 5px 10px 30px;
+}
+
+.sidebar-logo span {color:white}
+
+.admin-profile {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.admin-avatar {
+    width: 60px;
+    height: 60px;
+    display: grid;
+    place-items: center;
+    margin: auto auto 10px;
+    border-radius: 50%;
+    background: #047857;
+    font-size: 25px;
+}
+
+.admin-profile small {color:#94a3b8}
+
+.nav-title {
+    color: #64748b;
+    font-size: 11px;
+    font-weight: bold;
+    margin: 20px 12px 8px;
+    text-transform: uppercase;
+}
+
+.nav-link {
+    display: block;
+    padding: 12px;
+    margin: 4px 0;
+    border-radius: 8px;
+    text-decoration: none;
+    color: #cbd5e1;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.nav-link:hover,.nav-link.active {
+    background: #047857;
+    color: white;
+}
+
+.main {
+    margin-left: 255px;
+    padding: 25px;
+    min-height: 100vh;
+}
+
+.topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+}
+
+.topbar-right {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.menu-btn {
+    display: none;
+    background: #047857;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 7px;
+    cursor: pointer;
+}
+
+.page {display:none;animation:slide .3s ease}
+.page.active {display:block}
+
+.page-heading {margin-bottom:20px}
+.page-heading p {color:#64748b;margin-top:7px}
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(175px,1fr));
+    gap: 17px;
+    margin: 22px 0;
+}
+
+.stat-card {
+    background: white;
+    padding: 22px;
+    border-radius: 13px;
+    box-shadow: 0 3px 12px rgba(0,0,0,.04);
+    border-left: 4px solid #059669;
+}
+
+.stat-card small {color:#64748b}
+.stat-card h2 {font-size:28px;margin-top:12px;color:#0f2949}
+.stat-card .symbol {font-size:23px}
+
+.panel {
+    background: white;
+    border-radius: 13px;
+    padding: 22px;
+    margin-top: 20px;
+    box-shadow: 0 3px 12px rgba(0,0,0,.04);
+}
+
+.panel h3 {margin-bottom:17px}
+
+.table-wrap {overflow-x:auto}
+
+table {
+    width:100%;
+    border-collapse:collapse;
+    min-width:600px;
+}
+
+th,td {
+    padding:13px;
+    text-align:left;
+    border-bottom:1px solid #e2e8f0;
+    font-size:13px;
+}
+
+th {background:#f8fafc;color:#475569}
+
+.badge {
+    display:inline-block;
+    padding:6px 10px;
+    border-radius:20px;
+    background:#dcfce7;
+    color:#166534;
+    font-size:11px;
+}
+
+.badge.pending {background:#fef3c7;color:#92400e}
+.badge.rejected {background:#fee2e2;color:#991b1b}
+
+.action-btn {
+    padding:7px 10px;
+    border:0;
+    border-radius:6px;
+    cursor:pointer;
+    margin:2px;
+    background:#d1fae5;
+    color:#065f46;
+}
+
+.action-btn.danger {
+    background:#fee2e2;
+    color:#991b1b;
+}
+
+.action-btn.primary {
+    background:#dbeafe;
+    color:#1d4ed8;
+}
+
+.search-box {
+    width:100%;
+    max-width:350px;
+    padding:12px;
+    border:1px solid #cbd5e1;
+    border-radius:8px;
+    margin:10px 0 18px;
+}
+
+.form-grid {
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:15px;
+}
+
+.form-group label {
+    display:block;
+    font-size:13px;
+    font-weight:bold;
+    margin-bottom:7px;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width:100%;
+    padding:12px;
+    border:1px solid #cbd5e1;
+    border-radius:8px;
+    margin-bottom:15px;
+}
+
+.primary-btn {
+    background:#059669;
+    color:white;
+    border:0;
+    padding:12px 18px;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+.secondary-btn {
+    background:#e2e8f0;
+    color:#334155;
+    border:0;
+    padding:12px 18px;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+.notice {
+    background:#ecfdf5;
+    color:#065f46;
+    padding:15px;
+    border-radius:9px;
+    margin:15px 0;
+    font-size:13px;
+    line-height:1.6;
+}
+
+footer {
+    text-align:center;
+    padding:25px;
+    color:#94a3b8;
+    font-size:12px;
+}
+
+@media(max-width:850px) {
+    .sidebar {left:-265px}
+    .sidebar.open {left:0}
+    .main {margin-left:0;padding:17px}
+    .menu-btn {display:block}
+}
+</style>
+</head>
+
+<body>
+
+<!-- ADMIN LOGIN -->
+<section class="login-page" id="loginPage">
+    <div class="login-box">
+
+        <div class="brand">KaziLink <span>KE</span></div>
+
+        <h2>Administrator Login</h2>
+        <p>Secure administration portal</p>
+
+        <form id="loginForm">
+            <label>Administrator Email</label>
+            <input type="email" id="adminEmail"
+                   placeholder="admin@example.com" required>
+
+            <label>Password</label>
+            <input type="password" id="adminPassword"
+                   placeholder="Enter your password" required>
+
+            <button type="submit" class="login-btn">
+                Sign In to Admin Dashboard
+            </button>
+        </form>
+
+        <div class="login-message" id="loginMessage">
+            Frontend demonstration only. Django authentication is not connected.
+        </div>
+
+    </div>
+</section>
+
+
+<!-- ADMIN DASHBOARD -->
+<div class="dashboard" id="dashboard">
+
+<aside class="sidebar" id="sidebar">
+
+    <div class="sidebar-logo">KaziLink <span>KE</span></div>
+
+    <div class="admin-profile">
+        <div class="admin-avatar">A</div>
+        <h3>System Administrator</h3>
+        <small>Administrator Panel</small>
+    </div>
+
+    <div class="nav-title">Main Menu</div>
+
+    <a class="nav-link active" onclick="showPage('overview',this)">📊 Dashboard Overview</a>
+    <a class="nav-link" onclick="showPage('students',this)">🎓 Students</a>
+    <a class="nav-link" onclick="showPage('employers',this)">🏢 Employers</a>
+    <a class="nav-link" onclick="showPage('schools',this)">🏫 Schools & Institutions</a>
+
+    <div class="nav-title">Opportunity Management</div>
+
+    <a class="nav-link" onclick="showPage('jobs',this)">💼 Jobs & Attachments</a>
+    <a class="nav-link" onclick="showPage('applications',this)">📄 Applications</a>
+    <a class="nav-link" onclick="showPage('placements',this)">📋 Placements</a>
+
+    <div class="nav-title">Finance</div>
+
+    <a class="nav-link" onclick="showPage('subscriptions',this)">💳 Subscriptions</a>
+    <a class="nav-link" onclick="showPage('payments',this)">💰 Payments</a>
+
+    <div class="nav-title">System Management</div>
+
+    <a class="nav-link" onclick="showPage('documents',this)">📁 Documents</a>
+    <a class="nav-link" onclick="showPage('notifications',this)">🔔 Notifications</a>
+    <a class="nav-link" onclick="showPage('reports',this)">📈 Reports & Analytics</a>
+    <a class="nav-link" onclick="showPage('settings',this)">⚙️ System Settings</a>
+
+    <div class="nav-title">Account</div>
+    <a class="nav-link" onclick="adminLogout()">🚪 Logout</a>
+
+</aside>
+
+
+<main class="main">
+
+<header class="topbar">
+    <div style="display:flex;align-items:center;gap:12px">
+        <button class="menu-btn" onclick="toggleSidebar()">☰</button>
+        <div>
+            <h2>KaziLink KE Admin</h2>
+            <small style="color:#64748b">System Control Centre</small>
+        </div>
+    </div>
+
+    <div class="topbar-right">
+        <span>🇰🇪 Kenya</span>
+        <span>🔔 Admin</span>
+    </div>
+</header>
+
+
+<!-- OVERVIEW -->
+<section class="page active" id="overview">
+
+    <div class="page-heading">
+        <h2>Dashboard Overview</h2>
+        <p>Monitor the complete KaziLink KE platform.</p>
+    </div>
+
+    <div class="stats">
+        <div class="stat-card">
+            <span class="symbol">🎓</span>
+            <small>Total Students</small>
+            <h2>1,250</h2>
+        </div>
+
+        <div class="stat-card">
+            <span class="symbol">🏢</span>
+            <small>Employers</small>
+            <h2>86</h2>
+        </div>
+
+        <div class="stat-card">
+            <span class="symbol">🏫</span>
+            <small>Institutions</small>
+            <h2>42</h2>
+        </div>
+
+        <div class="stat-card">
+            <span class="symbol">💼</span>
+            <small>Opportunities</small>
+            <h2>156</h2>
+        </div>
+
+        <div class="stat-card">
+            <span class="symbol">📄</span>
+            <small>Applications</small>
+            <h2>890</h2>
+        </div>
+
+        <div class="stat-card">
+            <span class="symbol">💳</span>
+            <small>Active Subscriptions</small>
+            <h2>620</h2>
+        </div>
+    </div>
+
+    <div class="panel">
+        <h3>Recent Platform Activity</h3>
+        <div class="table-wrap">
+            <table>
+                <tr>
+                    <th>Activity</th>
+                    <th>Account</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                </tr>
+                <tr>
+                    <td>Student registration</td>
+                    <td>Student Demo</td>
+                    <td>Today</td>
+                    <td><span class="badge">Completed</span></td>
+                </tr>
+                <tr>
+                    <td>Employer verification</td>
+                    <td>Company Demo</td>
+                    <td>Today</td>
+                    <td><span class="badge pending">Pending</span></td>
+                </tr>
+                <tr>
+                    <td>Attachment application</td>
+                    <td>Student Demo</td>
+                    <td>Today</td>
+                    <td><span class="badge">Received</span></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <div class="notice">
+        Dashboard statistics are sample figures. Connect the Django API to display real platform records.
+    </div>
+
+</section>
+
+
+<!-- STUDENTS -->
+<section class="page" id="students">
+    <div class="page-heading">
+        <h2>Student Management</h2>
+        <p>Review student accounts and registration information.</p>
+    </div>
+
+    <input class="search-box" placeholder="Search students..." oninput="filterTable(this,'studentTable')">
+
+    <div class="panel table-wrap">
+        <table id="studentTable">
+            <tr>
+                <th>Student</th>
+                <th>Email</th>
+                <th>Course</th>
+                <th>County</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+            <tr>
+                <td>Student Demo 1</td>
+                <td>student1@example.com</td>
+                <td>Information Technology</td>
+                <td>Kakamega</td>
+                <td><span class="badge">Active</span></td>
+                <td><button class="action-btn primary" onclick="demoAction('View student')">View</button></td>
+            </tr>
+            <tr>
+                <td>Student Demo 2</td>
+                <td>student2@example.com</td>
+                <td>Computer Science</td>
+                <td>Nakuru</td>
+                <td><span class="badge pending">Pending</span></td>
+                <td><button class="action-btn primary" onclick="demoAction('View student')">View</button></td>
+            </tr>
+        </table>
+    </div>
+</section>
+
+
+<!-- EMPLOYERS -->
+<section class="page" id="employers">
+    <div class="page-heading">
+        <h2>Employer Management</h2>
+        <p>Verify companies and manage employer accounts.</p>
+    </div>
+
+    <input class="search-box" placeholder="Search employers..." oninput="filterTable(this,'employerTable')">
+
+    <div class="panel table-wrap">
+        <table id="employerTable">
+            <tr>
+                <th>Company</th>
+                <th>Email</th>
+                <th>Location</th>
+                <th>Verification</th>
+                <th>Action</th>
+            </tr>
+            <tr>
+                <td>Technology Solutions Ltd</td>
+                <td>company@example.com</td>
+                <td>Nairobi</td>
+                <td><span class="badge pending">Pending</span></td>
+                <td>
+                    <button class="action-btn" onclick="demoAction('Employer approval')">Review</button>
+                </td>
+            </tr>
+        </table>
+    </div>
+</section>
+
+
+<!-- SCHOOLS -->
+<section class="page" id="schools">
+    <div class="page-heading">
+        <h2>Schools & Institutions</h2>
+        <p>Manage participating learning institutions.</p>
+    </div>
+
+    <div class="panel">
+        <h3>Register Institution</h3>
+        <form onsubmit="demoForm(event,'Institution registration')">
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>Institution Name</label>
+                    <input required placeholder="Institution name">
+                </div>
+                <div class="form-group">
+                    <label>Institution Email</label>
+                    <input type="email" required placeholder="Email address">
+                </div>
+                <div class="form-group">
+                    <label>County</label>
+                    <input required placeholder="County">
+                </div>
+                <div class="form-group">
+                    <label>Contact Person</label>
+                    <input required placeholder="Contact name">
+                </div>
+            </div>
+            <button class="primary-btn">Register Institution</button>
+        </form>
+    </div>
+</section>
+
+
+<!-- JOBS -->
+<section class="page" id="jobs">
+    <div class="page-heading">
+        <h2>Jobs & Attachment Opportunities</h2>
+        <p>Monitor and manage opportunities posted on the platform.</p>
+    </div>
+
+    <div class="panel">
+        <h3>Create Opportunity</h3>
+        <form onsubmit="demoForm(event,'Opportunity creation')">
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>Opportunity Title</label>
+                    <input required placeholder="e.g. ICT Attachment">
+                </div>
+                <div class="form-group">
+                    <label>Employer</label>
+                    <input required placeholder="Company name">
+                </div>
+                <div class="form-group">
+                    <label>Opportunity Type</label>
+                    <select>
+                        <option>Industrial Attachment</option>
+                        <option>Internship</option>
+                        <option>Employment</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>County</label>
+                    <input required placeholder="County">
+                </div>
+            </div>
+            <button class="primary-btn">Create Opportunity</button>
+        </form>
+    </div>
+</section>
+
+
+<!-- APPLICATIONS -->
+<section class="page" id="applications">
+    <div class="page-heading">
+        <h2>Application Management</h2>
+        <p>Monitor student applications and application progress.</p>
+    </div>
+
+    <div class="panel table-wrap">
+        <table>
+            <tr>
+                <th>Application ID</th>
+                <th>Student</th>
+                <th>Opportunity</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+            <tr>
+                <td>APP-001</td>
+                <td>Student Demo</td>
+                <td>ICT Attachment</td>
+                <td>16 Nov 2026</td>
+                <td><span class="badge pending">Under Review</span></td>
+                <td><button class="action-btn primary" onclick="demoAction('Application review')">Review</button></td>
+            </tr>
+        </table>
+    </div>
+</section>
+
+
+<!-- PLACEMENTS -->
+<section class="page" id="placements">
+    <div class="page-heading">
+        <h2>Placement Management</h2>
+        <p>Monitor confirmed student attachments and placements.</p>
+    </div>
+
+    <div class="panel">
+        <h3>Placement Records</h3>
+        <p>Manage placement confirmations, supervisors and student progress reports through the connected system.</p>
+    </div>
+</section>
+
+
+<!-- SUBSCRIPTIONS -->
+<section class="page" id="subscriptions">
+    <div class="page-heading">
+        <h2>Subscription Management</h2>
+        <p>Monitor student annual subscriptions.</p>
+    </div>
+
+    <div class="stats">
+        <div class="stat-card"><small>Subscription Fee</small><h2>KES 1,000</h2></div>
+        <div class="stat-card"><small>Active Subscriptions</small><h2>620</h2></div>
+        <div class="stat-card"><small>Expired Subscriptions</small><h2>35</h2></div>
+    </div>
+
+    <div class="panel table-wrap">
+        <table>
+            <tr>
+                <th>Student</th>
+                <th>Amount</th>
+                <th>Subscription</th>
+                <th>Expiry</th>
+                <th>Status</th>
+            </tr>
+            <tr>
+                <td>Student Demo</td>
+                <td>KES 1,000</td>
+                <td>Annual</td>
+                <td>Demo date</td>
+                <td><span class="badge">Active (sample)</span></td>
+            </tr>
+        </table>
+    </div>
+</section>
+
+
+<!-- PAYMENTS -->
+<section class="page" id="payments">
+    <div class="page-heading">
+        <h2>Payment Management</h2>
+        <p>Review M-Pesa transactions and subscription payments.</p>
+    </div>
+
+    <div class="panel">
+        <h3>Payment Records</h3>
+        <div class="notice">
+            M-Pesa transaction verification must come from the Django backend and verified Daraja callbacks. Administrators should not be able to mark unverified payments as successful.
+        </div>
+        <div class="table-wrap">
+            <table>
+                <tr>
+                    <th>Reference</th>
+                    <th>Student</th>
+                    <th>Amount</th>
+                    <th>Method</th>
+                    <th>Status</th>
+                </tr>
+                <tr>
+                    <td>DEMO-001</td>
+                    <td>Student Demo</td>
+                    <td>KES 1,000</td>
+                    <td>M-Pesa</td>
+                    <td><span class="badge pending">Sample record</span></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</section>
+
+
+<!-- DOCUMENTS -->
+<section class="page" id="documents">
+    <div class="page-heading">
+        <h2>Document Management</h2>
+        <p>Review student CVs, school letters and uploaded documents.</p>
+    </div>
+
+    <div class="panel">
+        <h3>Document Review</h3>
+        <p>Documents should be stored privately and accessed only by authorized users.</p>
+        <div class="notice">
+            Connect the Django document API to list and review uploaded files. Do not expose private document URLs publicly.
+        </div>
+    </div>
+</section>
+
+
+<!-- NOTIFICATIONS -->
+<section class="page" id="notifications">
+    <div class="page-heading">
+        <h2>System Notifications</h2>
+        <p>Prepare announcements for platform users.</p>
+    </div>
+
+    <div class="panel">
+        <form onsubmit="demoForm(event,'Notification creation')">
+            <div class="form-group">
+                <label>Notification Title</label>
+                <input required placeholder="Announcement title">
+            </div>
+            <div class="form-group">
+                <label>Send To</label>
+                <select>
+                    <option>All Students</option>
+                    <option>All Employers</option>
+                    <option>All Schools</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Message</label>
+                <textarea rows="5" required placeholder="Write your message"></textarea>
+            </div>
+            <button class="primary-btn">Prepare Notification</button>
+        </form>
+    </div>
+</section>
+
+
+<!-- REPORTS -->
+<section class="page" id="reports">
+    <div class="page-heading">
+        <h2>Reports & Analytics</h2>
+        <p>Monitor platform performance and activity.</p>
+    </div>
+
+    <div class="stats">
+        <div class="stat-card"><small>Total Users</small><h2>1,378</h2></div>
+        <div class="stat-card"><small>Applications</small><h2>890</h2></div>
+        <div class="stat-card"><small>Employers</small><h2>86</h2></div>
+        <div class="stat-card"><small>Institutions</small><h2>42</h2></div>
+    </div>
+
+    <div class="panel">
+        <h3>Reporting Tools</h3>
+        <p>Generate reports for registrations, applications, employer verification, placements and subscription payments.</p>
+        <br>
+        <button class="primary-btn" onclick="demoAction('Report generation')">Generate Demo Report</button>
+    </div>
+</section>
+
+
+<!-- SETTINGS -->
+<section class="page" id="settings">
+    <div class="page-heading">
+        <h2>System Settings</h2>
+        <p>Configure KaziLink KE platform settings.</p>
+    </div>
+
+    <div class="panel">
+        <h3>Platform Information</h3>
+        <form onsubmit="demoForm(event,'Settings update')">
+            <div class="form-group">
+                <label>Platform Name</label>
+                <input value="KaziLink KE">
+            </div>
+            <div class="form-group">
+                <label>Support Email</label>
+                <input type="email" placeholder="support@example.com">
+            </div>
+            <div class="form-group">
+                <label>Annual Student Subscription (KES)</label>
+                <input type="number" value="1000">
+            </div>
+            <button class="primary-btn">Save Demo Settings</button>
+        </form>
+    </div>
+</section>
+
+<footer>
+    © 2026 KaziLink KE | Administration Control Centre
+</footer>
+
+</main>
+</div>
+
+
+<script>
+
+// DEMONSTRATION LOGIN ONLY
+// Replace with secure Django authentication before deployment.
+
+document.getElementById("loginForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    const email = document.getElementById("adminEmail").value.trim();
+    const password = document.getElementById("adminPassword").value;
+
+    if (!email || !password) {
+        document.getElementById("loginMessage").textContent =
+            "Enter your email and password.";
+        return;
+    }
+
+    document.getElementById("loginMessage").textContent =
+        "Opening demonstration dashboard...";
+
+    document.getElementById("loginPage").style.display = "none";
+    document.getElementById("dashboard").style.display = "block";
+});
+
+function showPage(pageId, element) {
+    document.querySelectorAll(".page").forEach(page => {
+        page.classList.remove("active");
+    });
+
+    document.getElementById(pageId).classList.add("active");
+
+    document.querySelectorAll(".nav-link").forEach(link => {
+        link.classList.remove("active");
+    });
+
+    if (element) element.classList.add("active");
+
+    document.getElementById("sidebar").classList.remove("open");
+}
+
+function toggleSidebar() {
+    document.getElementById("sidebar").classList.toggle("open");
+}
+
+function adminLogout() {
+    if (confirm("Are you sure you want to leave the admin dashboard?")) {
+        document.getElementById("dashboard").style.display = "none";
+        document.getElementById("loginPage").style.display = "flex";
+        document.getElementById("loginForm").reset();
+        document.getElementById("loginMessage").textContent =
+            "Frontend demonstration only. Django authentication is not connected.";
+    }
+}
+
+function filterTable(input, tableId) {
+    const search = input.value.toLowerCase();
+    const rows = document.querySelectorAll("#" + tableId + " tr");
+
+    rows.forEach((row,index) => {
+        if (index === 0) return;
+        row.style.display = row.innerText.toLowerCase().includes(search)
+            ? "" : "none";
+    });
+}
+
+function demoAction(action) {
+    alert(action + " is a demonstration action. Connect this feature to the Django backend before using it with real accounts.");
+}
+
+function demoForm(event, action) {
+    event.preventDefault();
+    alert(action + " is currently a frontend demonstration. No database changes have been made.");
+    event.target.reset();
+}
+
+</script>
+
+</body>
+</html>
